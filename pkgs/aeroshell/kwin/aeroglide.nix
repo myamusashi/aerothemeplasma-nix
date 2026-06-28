@@ -2,24 +2,27 @@
   stdenv,
   aeroshell-kwin-repo,
   kdePackages,
+  wayland-protocols,
   pkg-config,
   cmake,
+  ninja,
   lib,
   session ? "wayland"
 }:
 stdenv.mkDerivation {
   pname = "aeroshell-aeroglide-${session}";
-  version = "2026-03-18";
+  version = if session == "wayland" then "2026-06-18" else "2026-06-21";
   src = aeroshell-kwin-repo;
 
   preConfigure = ''
-    cd effects_cpp/${session}/aeroglide
-    substituteInPlace src/metadata.json src/CMakeLists.txt --replace-fail \
+    substituteInPlace effects_cpp/${session}/aeroglide/src/{metadata.json,CMakeLists.txt} --replace-fail \
       "kwin_aeroglide_config" "kwin_aeroglide_${session}_config"
   '';
-  buildInputs = [ kdePackages.qttools ] 
+  buildInputs = [ kdePackages.qttools wayland-protocols ]
     ++ lib.optionals (session == "x11") [ kdePackages.kwin-x11 ]
     ++ lib.optionals (session == "wayland") [ kdePackages.kwin ];
-  nativeBuildInputs = [ cmake pkg-config kdePackages.wrapQtAppsHook ];
+  nativeBuildInputs = [ cmake pkg-config ninja kdePackages.wrapQtAppsHook ];
   cmakeFlags = [ (lib.cmakeBool "KWIN_BUILD_WAYLAND" (session == "wayland")) ];
+  buildFlags = [ "aeroglide${lib.optionalString (session == "x11") "-x11"}" ];
+  installTargets = "effects_cpp/${session}/aeroglide/install";
 }

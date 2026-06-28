@@ -1,21 +1,31 @@
 {
   kdePackages,
-  fetchpatch
+  fetchFromGitLab,
+  fetchzip,
+  runCommand,
+  diffutils
 }:
+let
+  patch-source = fetchFromGitLab {
+    domain = "gitgud.io";
+    owner = "aeroshell";
+    repo = "libplasma";
+    rev = "d1c5ad5a1122514996f98ac746681650a8978f8f";
+    hash = "sha256-78pc7EJ37J2+lmcbKyE1ePwqJ7jbDSuvUcC0N9rmBWc=";
+  };
+  patch-target = fetchzip {
+    url = "mirror://kde/stable/plasma/6.7.0/libplasma-6.7.0.tar.xz";
+    hash = "sha256-YIFhiymeaYv0cJvM/8eSJw95J0L7nAq2HZou2IscznQ=";
+  };
+in
 kdePackages.libplasma.overrideAttrs (oldAttrs: {
   pname = "aeroshell-libplasma";
-  patches = [
-    # "Apply ATP patches to libplasma"
-    (fetchpatch {
-      url = "https://gitgud.io/aeroshell/libplasma/-/commit/3b0709a266625c00d3e7d09d4eeecb9ff52e4d41.patch";
-      hash = "sha256-faf2gyd7y6uA/oAV/+IMOfYbNOO9wmvh9IyTItYFTyE=";
-    })
-    # "Remove assertion failure on empty dialogs"
-    (fetchpatch {
-      url = "https://gitgud.io/aeroshell/libplasma/-/commit/a4e0bcc9e01434e5680070197e0e217ba50699c8.patch";
-      hash = "sha256-wPpWVZOB4AAuLY+/IuU8JzUmRpzpLW8+sysy8ExAqfg=";
-    })
-  ];
+  patches = [(
+    runCommand "aeroshell-libplasma-patches" { nativeBuildInputs = [diffutils]; } ''
+      cd ${patch-source}
+      diff -ru ${patch-target}/src ./src > $out || test $? -eq 1
+    ''
+  )];
   postPatch = ''
     shopt -s globstar
 

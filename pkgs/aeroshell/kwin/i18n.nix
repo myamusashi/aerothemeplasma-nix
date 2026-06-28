@@ -10,15 +10,13 @@ stdenv.mkDerivation {
   src = aeroshell-kwin-repo;
   
   postPatch = ''
+    sed -i "24,53d;58,69d" CMakeLists.txt
     substituteInPlace CMakeLists.txt \
       --replace-fail "install()" "ki18n_install(po)" \
-      --replace-fail "add_subdirectory(effects_cpp)" ""
+      --replace-fail "find_package(KWinDBusInterface CONFIG REQUIRED)" "find_package(KF6 ''${KF_MIN_VERSION} REQUIRED COMPONENTS I18n)"
   '';
   
-  buildInputs = with kdePackages; [ 
-    extra-cmake-modules qtdeclarative 
-    qttools kconfig ki18n
-  ];
+  buildInputs = with kdePackages; [ qtbase ki18n ];
   nativeBuildInputs = [ cmake kdePackages.wrapQtAppsHook ];
   cmakeFlags = [ "-DKWIN_INSTALL_MISC=false" ];
 }

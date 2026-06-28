@@ -2,21 +2,24 @@
   stdenv,
   aeroshell-kwin-repo,
   kdePackages,
+  wayland-protocols,
   pkg-config,
   smod,
   cmake,
+  ninja,
   lib,
   session ? "wayland"
 }:
 stdenv.mkDerivation {
   pname = "aeroshell-smodsnap-${session}";
-  version = "2026-02-23";
+  version = "2026-06-18";
   src = aeroshell-kwin-repo;
 
-  preConfigure = "cd effects_cpp/${session}/kwin-effect-smodsnap-v2";
-  buildInputs = [ kdePackages.qttools smod ] 
+  buildInputs = [ kdePackages.qttools wayland-protocols smod ]
     ++ lib.optionals (session == "x11") [ kdePackages.kwin-x11 ]
     ++ lib.optionals (session == "wayland") [ kdePackages.kwin ];
-  nativeBuildInputs = [ cmake pkg-config kdePackages.wrapQtAppsHook ];
+  nativeBuildInputs = [ cmake pkg-config ninja kdePackages.wrapQtAppsHook ];
   cmakeFlags = [ (lib.cmakeBool "KWIN_BUILD_WAYLAND" (session == "wayland")) ];
+  buildFlags = [ "startupfeedback${lib.optionalString (session == "x11") "-x11"}" ];
+  installTargets = "effects_cpp/${session}/kwin-effect-smodsnap-v2/install";
 }

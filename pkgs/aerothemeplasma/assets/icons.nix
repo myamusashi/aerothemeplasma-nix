@@ -4,7 +4,7 @@
 }:
 stdenvNoCC.mkDerivation {
   pname = "aerothemeplasma-icons";
-  version = "2026-03-14";
+  version = "2026-06-20";
   src = aerothemeplasma-icons-repo;
 
   installPhase = ''

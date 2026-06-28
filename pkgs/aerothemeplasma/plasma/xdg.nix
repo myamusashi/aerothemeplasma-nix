@@ -48,6 +48,7 @@ stdenvNoCC.mkDerivation {
     scaleEnabled=false
     slideEnabled=false
     slidingpopupsEnabled=false
+    slidingnotificationsEnabled=false
     smodglowEnabled=true
     smodglow-x11Enabled=true
     smodpeekeffectEnabled=true

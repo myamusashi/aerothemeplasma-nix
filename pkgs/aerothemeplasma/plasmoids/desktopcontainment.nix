@@ -6,7 +6,7 @@
 }:
 stdenv.mkDerivation {
   pname = "aerothemeplasma-desktopcontainment";
-  version = "2026-03-11";
+  version = "2026-06-27";
   src = aerothemeplasma-repo;
 
   preConfigure = ''

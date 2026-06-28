@@ -13,15 +13,6 @@
       flake.nixosModules.aerothemeplasma-nix = moduleWithSystem (
         perSystem@{ config }: import ./modules/default.nix perSystem
       );
-      flake.homeModules.aerothemeplasma-nix = throw ''
-        aerothemeplasma-nix's home-manager module has been removed for Plasma 6.6, as the theme
-        now comes with an "Out of the Box Experience" wizard that can configure itself. It is stabler
-        than attempting to enable AeroThemePlasma through plasma-manager, which has a few odd quirks.
-
-        Please remove aerothemeplasma from home-manager and read the README's configuration section again:
-        https://github.com/nyakase/aerothemeplasma-nix#configuration. You will see the wizard open on your 
-        next login. Note that plasma-manager settings could override the wizard's settings if conflicting. 
-      '';
 
       # This configuration is intended for testing,
       # please do not try to switch to it!
@@ -39,36 +30,36 @@
               domain = "gitgud.io";
               owner = "aeroshell";
               repo = "aeroshell-kwin-components";
-              rev = "b787cfe07b31374ddfd700034f9f7138e51382dc";
-              hash = "sha256-xAj+JphwwabYdrGC9T3DKNanCgGXxAFHVpgfwkkI8UI=";
+              rev = "994ecfb9c4d13bae28532556df0ab734e2c99ccb";
+              hash = "sha256-vLY/eYU5I7CBKp8Scz34YOCoMEjfn00FRtiJQzuMLfg=";
             };
             aeroshell-smod-repo = pkgs.fetchFromGitLab {
               domain = "gitgud.io";
               owner = "aeroshell";
               repo = "smod";
-              rev = "bc04a7b9ecbb4a8f0a88e69c1b1e4fd4ed2f358d";
-              hash = "sha256-NXhiE5dzZoGKeGjLDch08OhtZvwpVH9SIy2fsKw2tC8=";
+              rev = "a972593cfbadc1fc41f3d8eb9ae3977f6171e8e0";
+              hash = "sha256-yozMlCvelwmCnluc3cdjamVzHqnQlQ/9gAGg90f2+d8=";
             };
             aeroshell-workspace-repo = pkgs.fetchFromGitLab {
               domain = "gitgud.io";
               owner = "aeroshell";
               repo = "aeroshell-workspace";
-              rev = "12313066fbeafb950ad9ac59d98fa4b16a33c85b";
-              hash = "sha256-JQ7Mx0XL8VnrAxtDaRu46EIXePHNQZy5hNN2GIS4m94=";
+              rev = "00a39ba08f3b9441b0883f1b82fc4e7e9e6a44b7";
+              hash = "sha256-UGT+MaFwSgLzacdwZTLhaxW5qhaSVa6ZFE6F4XCaHbE=";
             };
             aerothemeplasma-icons-repo = pkgs.fetchFromGitLab {
               domain = "gitgud.io";
               owner = "aeroshell";
               repo = "atp/aerothemeplasma-icons";
-              rev = "b8d5ce100251b74a3a3c5b4a474cb3ff8df11bba";
-              hash = "sha256-4GFn8wJ8b58AwZZAyt7/0R1JTcJtamoocPjr31c8Nk4=";
+              rev = "96950b8028a5d960cb683280fe5f1d9e33e6b8a2";
+              hash = "sha256-7dfoGD3LQiBQ7/JeM1CwAZ+NNMaAJyAN/SaYIHZl1xg=";
             };
             aerothemeplasma-repo = pkgs.fetchFromGitLab {
               domain = "gitgud.io";
               owner = "aeroshell";
               repo = "atp/aerothemeplasma";
-              rev = "d4ca559d1ff9f26dd6652df66ecc075aa14efdc2";
-              hash = "sha256-Ac8M1ZjWum41lGbR5o6uX69xez5zT2rbYqF/Sl0NXl8=";
+              rev = "3ec84b8772392fda8f08736bbabd613f4e220853";
+              hash = "sha256-uK4r19mjRzjaqOjzOAv5zR8gn4m+B67fW1/PrLEZ5rA=";
             };
             
             libplasma = self.callPackage ./pkgs/aeroshell/hacks/libplasma.nix {};

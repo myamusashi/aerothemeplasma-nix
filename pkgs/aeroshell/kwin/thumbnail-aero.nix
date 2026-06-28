@@ -4,7 +4,7 @@
 }:
 stdenvNoCC.mkDerivation {
   pname = "aeroshell-thumbnail-aero";
-  version = "2026-03-03";
+  version = "2026-06-27";
   src = aeroshell-kwin-repo;
 
   dontUnpack = true;

@@ -2,24 +2,27 @@
   stdenv,
   aeroshell-kwin-repo,
   kdePackages,
+  wayland-protocols,
   pkg-config,
   cmake,
+  ninja,
   lib,
   session ? "wayland"
 }:
 stdenv.mkDerivation {
   pname = "aeroshell-aeroglassblur-${session}";
-  version = "2026-03-23";
+  version = if session == "wayland" then "2026-06-18" else "2026-06-21";
   src = aeroshell-kwin-repo;
 
   preConfigure = ''
-    cd effects_cpp/${session}/kde-effects-aeroglassblur
-    substituteInPlace src/metadata.json src/kcm/CMakeLists.txt --replace-fail \
+    substituteInPlace effects_cpp/${session}/kde-effects-aeroglassblur/src/{metadata.json,kcm/CMakeLists.txt} --replace-fail \
       "kwin_aeroglassblur_config" "kwin_aeroglassblur_${session}_config"
   '';
-  buildInputs = [ kdePackages.qttools ] 
+  buildInputs = [ kdePackages.qttools wayland-protocols ]
     ++ lib.optionals (session == "x11") [ kdePackages.kwin-x11 ]
     ++ lib.optionals (session == "wayland") [ kdePackages.kwin ];
-  nativeBuildInputs = [ cmake kdePackages.wrapQtAppsHook ];
+  nativeBuildInputs = [ cmake pkg-config ninja kdePackages.wrapQtAppsHook ];
   cmakeFlags = [ (lib.cmakeBool "KWIN_BUILD_WAYLAND" (session == "wayland")) ];
+  buildFlags = [ "aeroglassblur${lib.optionalString (session == "x11") "-x11"}" ];
+  installTargets = "effects_cpp/${session}/kde-effects-aeroglassblur/install";
 }
