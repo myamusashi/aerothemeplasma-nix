@@ -23,6 +23,6 @@ stdenv.mkDerivation {
     ++ lib.optionals (session == "wayland") [ kdePackages.kwin ];
   nativeBuildInputs = [ cmake pkg-config ninja kdePackages.wrapQtAppsHook ];
   cmakeFlags = [ (lib.cmakeBool "KWIN_BUILD_WAYLAND" (session == "wayland")) ];
-  buildFlags = [ "aeroglassblur${lib.optionalString (session == "x11") "-x11"}" ];
+  ninjaFlags = [ "aeroglassblur${lib.optionalString (session == "x11") "-x11"}" ];
   installTargets = "effects_cpp/${session}/kde-effects-aeroglassblur/install";
 }
